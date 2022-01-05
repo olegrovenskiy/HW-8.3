@@ -1,0 +1,17 @@
+node ("agent01") {
+    stage("Git checkout"){
+        git branch: 'main', url: 'https://github.com/olegrovenskiy/HW-8.3.git'
+    }
+    stage("Sample check Prod RUN"){
+        prod_run = false
+    }
+    stage("Run playbook"){
+        if (prod_run){
+            sh 'ansible-playbook site.yml -i inventory/prod.yml'
+        }
+        else{
+            sh 'ansible-playbook site.yml -i inventory/prod.yml --check --diff'
+        }
+        
+    }
+}
